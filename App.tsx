@@ -1,36 +1,65 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { Canvas, Circle, Group } from '@shopify/react-native-skia';
-import { WebView } from 'react-native-webview';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font';
 
+export default function App() {
+  const [loaded] = useFonts({
+    'matrix-code-nfi': require('./assets/fonts/matrix code nfi.ttf')
+  });
 
+  
+  const [render, SetRender] = useState<Boolean>(false)
 
-const App = () => {
+  let lastElement: string = String.fromCharCode(Math.random() * (122 - 97) + 97)
 
+  function timeCycle( delay : number) : void {
+      setTimeout(()=>{
+        SetRender(!render)
+      }, delay)
+  }
 
+  useEffect(()=>{
+
+  } , [render]
+  )
+
+  // timeCycle(200)
 
   return (
-    <View style={{ flex: 1 }}>
-      <Text> Hello world </Text>
+    <View key="main" style={styles.container}>
+      <View style={styles.matContain}>
+        {Array.from({length: 16}).map((el, idx) => (
+          <Text style={styles.matrix} key={idx}> {String.fromCharCode(Math.random() * (122 - 97) + 97)} </Text>
+        ))}
+        <Text style={[styles.matrix, { color: '#00FF41' }]} > {String.fromCharCode(Math.random() * (122 - 97) + 97)} </Text>
+      </View>
     </View>
   );
-};
+}
 
-// const style = StyleSheet.create({
-//   canvas: {
-//     width: '100%',
-//     height: '100%',
-//     backgroundColor: 'black',
-//     // zIndex: -100,
-//     position: 'absolute'
-//   },
-//   text: {
-//     display: 'flex',
-//     flexDirection: 'column-reverse',
-//     zIndex: 1,
-//     color: "#3BB143",
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
 
-//   }
-// })
+  },
+  matContain: {
+    display: 'flex',
+    // borderWidth: 2,
+    // borderColor: 'red',
+    margin: 0,
 
-export default App;
+
+  },
+  matrix: {
+    flexDirection: 'column',
+    fontFamily: 'matrix-code-nfi', // This matches the CSS font-family name
+    fontSize: 22,
+    color: '#32CD32',
+    // borderWidth: 1,
+    // borderColor: 'red',
+    // color: 'white'
+  }
+});
